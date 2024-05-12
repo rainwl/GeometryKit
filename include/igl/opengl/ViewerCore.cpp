@@ -531,7 +531,7 @@ IGL_INLINE bool igl::opengl::ViewerCore::is_set(unsigned int property_mask) cons
 IGL_INLINE igl::opengl::ViewerCore::ViewerCore()
 {
   // Default colors
-  background_color << 0.3f, 0.3f, 0.5f, 1.0f;
+  background_color << 0.0f, 0.0f, 0.0f, 1.0f;
 
   // Default lights settings
   light_position << 0.0f, 0.3f, 0.0f;

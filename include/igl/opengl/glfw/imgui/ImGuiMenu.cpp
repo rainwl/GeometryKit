@@ -44,7 +44,7 @@ IGL_INLINE void ImGuiMenu::draw_viewer_window()
   ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f), ImGuiCond_FirstUseEver);
   bool _viewer_menu_visible = true;
   ImGui::Begin(
-      "Viewer", &_viewer_menu_visible,
+      "Debug", &_viewer_menu_visible,
       ImGuiWindowFlags_NoSavedSettings
       | ImGuiWindowFlags_AlwaysAutoResize
   );
@@ -58,36 +58,36 @@ IGL_INLINE void ImGuiMenu::draw_viewer_window()
 IGL_INLINE void ImGuiMenu::draw_viewer_menu()
 {
   // Workspace
-  if (ImGui::CollapsingHeader("Workspace", ImGuiTreeNodeFlags_DefaultOpen))
-  {
-    float w = ImGui::GetContentRegionAvail().x;
-    float p = ImGui::GetStyle().FramePadding.x;
-    if (ImGui::Button("Load##Workspace", ImVec2((w-p)/2.f, 0)))
-    {
-      viewer->load_scene();
-    }
-    ImGui::SameLine(0, p);
-    if (ImGui::Button("Save##Workspace", ImVec2((w-p)/2.f, 0)))
-    {
-      viewer->save_scene();
-    }
-  }
+//  if (ImGui::CollapsingHeader("Workspace", ImGuiTreeNodeFlags_DefaultOpen))
+//  {
+//    float w = ImGui::GetContentRegionAvail().x;
+//    float p = ImGui::GetStyle().FramePadding.x;
+//    if (ImGui::Button("Load##Workspace", ImVec2((w-p)/2.f, 0)))
+//    {
+//      viewer->load_scene();
+//    }
+//    ImGui::SameLine(0, p);
+//    if (ImGui::Button("Save##Workspace", ImVec2((w-p)/2.f, 0)))
+//    {
+//      viewer->save_scene();
+//    }
+//  }
 
   // Mesh
-  if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
-  {
-    float w = ImGui::GetContentRegionAvail().x;
-    float p = ImGui::GetStyle().FramePadding.x;
-    if (ImGui::Button("Load##Mesh", ImVec2((w-p)/2.f, 0)))
-    {
-      viewer->open_dialog_load_mesh();
-    }
-    ImGui::SameLine(0, p);
-    if (ImGui::Button("Save##Mesh", ImVec2((w-p)/2.f, 0)))
-    {
-      viewer->open_dialog_save_mesh();
-    }
-  }
+//  if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
+//  {
+//    float w = ImGui::GetContentRegionAvail().x;
+//    float p = ImGui::GetStyle().FramePadding.x;
+//    if (ImGui::Button("Load##Mesh", ImVec2((w-p)/2.f, 0)))
+//    {
+//      viewer->open_dialog_load_mesh();
+//    }
+//    ImGui::SameLine(0, p);
+//    if (ImGui::Button("Save##Mesh", ImVec2((w-p)/2.f, 0)))
+//    {
+//      viewer->open_dialog_save_mesh();
+//    }
+//  }
 
   // Viewing options
   if (ImGui::CollapsingHeader("Viewing Options", ImGuiTreeNodeFlags_DefaultOpen))

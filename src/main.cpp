@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
   // Load a mesh from file
   Eigen::MatrixXd V;
   Eigen::MatrixXi F;
-  igl::read_triangle_mesh("./cow.off",V,F);
+  igl::read_triangle_mesh("./bunny.off",V,F);
   // Set up viewer
   igl::opengl::glfw::Viewer vr;
   vr.data().set_mesh(V,F);
