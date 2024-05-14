@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   // Load a mesh from file
   Eigen::MatrixXd V, C;
   Eigen::MatrixXi F;
-  igl::read_triangle_mesh("./am.off", V, F);
+  igl::read_triangle_mesh("./couplingdown.off", V, F);
   C = Eigen::MatrixXd::Constant(F.rows(), 3, 1);
   // Set up viewer
   igl::opengl::glfw::Viewer vr;
@@ -25,6 +25,76 @@ int main(int argc, char *argv[]) {
                                      viewer.core().proj, viewer.core().viewport, V, F, fid, bc)) {
           // paint hit red
           C.row(fid) << 1, 0, 0;
+
+
+          std::cout << "Face index: " << fid << std::endl;
+
+          // Retrieve the indices of the vertices that make up the face
+          int v1 = F(fid, 0);
+          int v2 = F(fid, 1);
+          int v3 = F(fid, 2);
+
+          // Output the coordinates of the vertices
+          Eigen::Vector3d coord1 = V.row(v1);
+          Eigen::Vector3d coord2 = V.row(v2);
+          Eigen::Vector3d coord3 = V.row(v3);
+
+// Check if x, y, or z coordinates are the same among the vertices
+          if (coord1.x() == coord2.x() && coord2.x() == coord3.x()) {
+            std::cout << "All vertices of the selected face have the same x value: " << coord1.x() << std::endl;
+            double X = coord1.x();
+
+            // Traverse all faces to find and color faces where all vertices have the same y coordinate equal to X
+            for (int i = 0; i < F.rows(); ++i) {
+              // Get vertex indices of the face
+              int v1 = F(i, 0);
+              int v2 = F(i, 1);
+              int v3 = F(i, 2);
+
+              // Check if all vertices of this face have the y coordinate equal to X
+              if (V(v1, 0) == X && V(v2, 0) == X && V(v3, 0) == X) {
+                // Set the color for the corresponding face
+                std::cout << i << std::endl;
+                C.row(i) << 1, 0, 0;
+              }
+            }
+          } else if (coord1.y() == coord2.y() && coord2.y() == coord3.y()) {
+            std::cout << "All vertices of the selected face have the same y value: " << coord1.y() << std::endl;
+            double commonY = coord1.y();
+
+            // Traverse all faces to find and color faces where all vertices have the same y coordinate equal to commonY
+            for (int i = 0; i < F.rows(); ++i) {
+              // Get vertex indices of the face
+              int v1 = F(i, 0);
+              int v2 = F(i, 1);
+              int v3 = F(i, 2);
+
+              // Check if all vertices of this face have the y coordinate equal to commonY
+              if (V(v1, 1) == commonY && V(v2, 1) == commonY && V(v3, 1) == commonY) {
+                // Set the color for the corresponding face
+                std::cout << i << std::endl;
+                C.row(i) << 1, 0, 0;
+              }
+            }
+          } else if (coord1.z() == coord2.z() && coord2.z() == coord3.z()) {
+            std::cout << "All vertices of the selected face have the same z value: " << coord1.z() << std::endl;
+            double commonZ = coord1.z();
+
+            // Traverse all faces to find and color faces where all vertices have the same y coordinate equal to commonZ
+            for (int i = 0; i < F.rows(); ++i) {
+              // Get vertex indices of the face
+              int v1 = F(i, 0);
+              int v2 = F(i, 1);
+              int v3 = F(i, 2);
+
+              // Check if all vertices of this face have the y coordinate equal to commonZ
+              if (V(v1, 2) == commonZ && V(v2, 2) == commonZ && V(v3, 2) == commonZ) {
+                // Set the color for the corresponding face
+                std::cout << i << std::endl;
+                C.row(i) << 1, 0, 0;
+              }
+            }
+          }
           viewer.data().set_colors(C);
           return true;
         }
