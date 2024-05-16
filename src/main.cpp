@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 #include "igl/read_triangle_mesh.h"
 #include "igl/opengl/glfw/Viewer.h"
 #include "igl/opengl/glfw/imgui/ImGuiPlugin.h"
@@ -7,11 +9,15 @@
 #include "unproject_onto_mesh.h"
 
 int main(int argc, char *argv[]) {
+#pragma region Load Mesh
   // Load a mesh from file
   Eigen::MatrixXd V, C;
   Eigen::MatrixXi F;
   igl::read_triangle_mesh("./couplingdown.off", V, F);
   C = Eigen::MatrixXd::Constant(F.rows(), 3, 1);
+#pragma endregion
+
+#pragma region Viewer
   // Set up viewer
   igl::opengl::glfw::Viewer vr;
   vr.callback_mouse_down =
@@ -21,11 +27,16 @@ int main(int argc, char *argv[]) {
         // Cast a ray in the view direction starting from the mouse position
         double x = viewer.current_mouse_x;
         double y = viewer.core().viewport(3) - viewer.current_mouse_y;
-        if (igl::unproject_onto_mesh(Eigen::Vector2f(x, y), viewer.core().view,
-                                     viewer.core().proj, viewer.core().viewport, V, F, fid, bc)) {
+        if (igl::unproject_onto_mesh(Eigen::Vector2f(x, y),
+                                     viewer.core().view,
+                                     viewer.core().proj,
+                                     viewer.core().viewport,
+                                     V,
+                                     F,
+                                     fid,
+                                     bc)) {
           // paint hit red
           C.row(fid) << 1, 0, 0;
-
 
           std::cout << "Face index: " << fid << std::endl;
 
@@ -39,7 +50,7 @@ int main(int argc, char *argv[]) {
           Eigen::Vector3d coord2 = V.row(v2);
           Eigen::Vector3d coord3 = V.row(v3);
 
-// Check if x, y, or z coordinates are the same among the vertices
+          // Check if x, y, or z coordinates are the same among the vertices
           if (coord1.x() == coord2.x() && coord2.x() == coord3.x()) {
             std::cout << "All vertices of the selected face have the same x value: " << coord1.x() << std::endl;
             double X = coord1.x();
@@ -103,7 +114,9 @@ int main(int argc, char *argv[]) {
   vr.data().set_mesh(V, F);
   vr.data().set_colors(C);
   vr.data().show_lines = false;
+#pragma endregion
 
+#pragma region imgui
   igl::opengl::glfw::imgui::ImGuiPlugin imgui_plugin;
   vr.plugins.push_back(&imgui_plugin);
 
@@ -136,17 +149,15 @@ int main(int argc, char *argv[]) {
       case 'R':
       case 'r': gizmo.operation = ImGuizmo::SCALE;
         return true;
+      default:break;
     }
     return false;
   };
 
   igl::opengl::glfw::imgui::ImGuiMenu menu;
   imgui_plugin.widgets.push_back(&menu);
-
-  std::cout << R"(
-W,w  Switch to translate operation
-E,e  Switch to rotate operation
-R,r  Switch to scale operation
-)";
   vr.launch();
+#pragma endregion
 }
+
+#pragma clang diagnostic pop
